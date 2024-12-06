@@ -37,67 +37,97 @@
 ---
 
 #### Étape 2 : Joindre le serveur au domaine
-1. Joignez le serveur au domaine existant (exemple : `domaine.local`) :
-   ```powershell
-   Add-Computer -DomainName "domaine.local" -Credential (Get-Credential) -Restart
-   ```
-   - Remplacez `domaine.local` par le nom de votre domaine.
-   - Entrez les identifiants d’un compte administrateur du domaine (exemple : `domaine\Administrator`)
+1. Joignez le serveur au domaine existant (exemple : `pharmgreen.com`) :
 
-2. Vérifiez que le serveur a rejoint le domaine :
+![2](https://github.com/user-attachments/assets/13a7ddc4-9812-4f8b-8e68-9626d07d6e92)
+![3](https://github.com/user-attachments/assets/2b8a7ef5-6cdb-4422-a53e-3216171d6451)
+
+
+2. Facultatif : Tapez 15 sur l'écran d'accueil et vérifiez si le serveur a bien rejoint le domaine :
    ```powershell
    Get-ComputerInfo | Select-Object CsDomain
    ```
 
 ---
 
-#### Étape 3 : Installer le rôle AD-DS
 
-##### 3.1 Installer le rôle AD-DS
+#### Étape 3 : Se connecter au domaine
+
+##### 3.1 Déconnectez-vous :
+
+![1 - Copie - Copie](https://github.com/user-attachments/assets/bbfbfd90-3f9a-450c-b01d-228c44eed5d2)
+
+##### 3.2 Connectez-vous sur le domaine en suivant les étapes suivantes :
+
+- Appuyez sur ECHAP  
+![4](https://github.com/user-attachments/assets/82a8c52f-6339-4a55-9d24-3da62bb85f79)  
+- Appuyez sur ECHAP  
+![5](https://github.com/user-attachments/assets/69f056dc-d824-43fb-98d3-93a1a8528cc0)  
+- Choissiez Other user  
+![6](https://github.com/user-attachments/assets/2c7971e3-37a2-4af6-9f78-66226dc657ba)  
+- Choisissez Local or Domain account password  
+![7](https://github.com/user-attachments/assets/b63f677d-e202-4bc0-bd2c-a703707590ba)  
+- Entrez votre nom d'utilisateur dans le domaine et votre mot de passe  
+![8](https://github.com/user-attachments/assets/beb86c59-da0b-4cd8-b284-43f1e3ce7a95)  
+
+
+#### Étape 4 : Installer le rôle AD-DS
+
 1. Installez le rôle **Active Directory Domain Services** :
    ```powershell
    Install-WindowsFeature AD-Domain-Services
    ```
 
+- Attendez pendant l'installation  
+![10](https://github.com/user-attachments/assets/ec5a2346-8ec5-44c3-a357-ee9bb3b9da2d)  
+- Une fois le processus terminé vous devriez obtenir cet écran  
+![11](https://github.com/user-attachments/assets/0b093d2b-a037-4bb5-8cc4-46a17655073b)
+
+
 2. Vérifiez que l'installation est terminée avec succès :
    ```powershell
    Get-WindowsFeature AD-Domain-Services
    ```
+![Capture d’écran 2024-12-06 134509](https://github.com/user-attachments/assets/b313e281-2cd5-4bc4-b067-d95d12f857d3)
 
 ---
 
-#### Étape 4 : Promouvoir le serveur en contrôleur de domaine
+#### Étape 5 : Promouvoir le serveur en contrôleur de domaine
 
-##### 4.1 Lancer la promotion
+##### 5.1 Lancer la promotion
 1. Exécutez la commande suivante pour promouvoir le serveur en tant que contrôleur de domaine :
    ```powershell
-   Install-ADDSDomainController -DomainName "domaine.local" -Credential (Get-Credential) -InstallDns:$true -SafeModeAdministratorPassword (ConvertTo-SecureString "MotDePasseDS" -AsPlainText -Force)
+   Install-ADDSDomainController -DomainName "pharmgreen.com" -Credential (Get-Credential) -InstallDns:$true -SafeModeAdministratorPassword (ConvertTo-SecureString "MotDePasseDS" -AsPlainText -Force)
    ```
-   - Remplacez `domaine.local` par le nom de votre domaine.
-   - Remplacez `MotDePasseDS` par un mot de passe sécurisé pour le mode de restauration AD.
+   - Remplacez `pharmgreen.com` par le nom de votre domaine.
+   - Remplacez `MotDePasseDS` par un mot de passe sécurisé pour le mode de restauration AD.  
+![12](https://github.com/user-attachments/assets/d5cb9bbc-9771-43d1-bc36-90c78326b7de)  
 
-2. Attendez que la configuration soit terminée. Le serveur redémarrera automatiquement.
+
+2. Attendez que la configuration soit terminée. Le serveur redémarrera automatiquement.  
+![13](https://github.com/user-attachments/assets/6adb7bba-26c7-4c9e-bef8-072c48af4f50)  
+![14](https://github.com/user-attachments/assets/075cc29b-1d3c-4cad-a601-067313247417)
+
+
 
 ---
 
-##### 4.2 Vérifiez la promotion
+##### 5.2 Vérifiez la promotion
 1. Confirmez que le serveur est devenu un contrôleur de domaine :
    ```powershell
    Get-ADDomainController -Filter *
    ```
    Le serveur doit apparaître dans la liste des contrôleurs de domaine.
+![15](https://github.com/user-attachments/assets/75b19533-57cf-4a8c-8574-6641bf86e0b6)  
 
 2. Vérifiez que le serveur est dans l’OU **Domain Controllers** :
    - Ouvrez **Active Directory Users and Computers** sur un autre contrôleur de domaine.
    - Assurez-vous que l'objet du serveur se trouve dans l'OU **Domain Controllers**.
+![16](https://github.com/user-attachments/assets/2f7baf1a-ca9d-4e5f-93a6-0bf19fa77bd2)  
 
 ---
 
-
-
----
-
-#### Résultat attendu
+##### Résultat attendu
 À la fin de ce tutoriel, votre serveur Windows Server Core sera configuré comme un contrôleur de domaine fonctionnel et intégré au domaine existant.
 
 - Le serveur pourra gérer les authentifications et participer à la réplication AD.
