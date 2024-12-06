@@ -104,40 +104,7 @@
 
 ---
 
-## Étape 5 : Vérifications et tests
 
-### 5.1 Tester la réplication Active Directory
-1. Testez la réplication AD sur le serveur Core :
-   ```powershell
-   repadmin /replsummary
-   ```
-2. Affichez les détails de la réplication :
-   ```powershell
-   repadmin /showrepl
-   ```
-
----
-
-### 5.2 Valider les services DNS
-1. Vérifiez que le DNS est opérationnel :
-   ```powershell
-   dcdiag /test:dns
-   ```
-2. Testez la résolution de noms dans le domaine :
-   ```powershell
-   Resolve-DnsName domaine.local
-   ```
-
----
-
-## Étape 6 : Finalisation
-
-1. Vérifiez que le contrôleur de domaine est configuré en tant que **Global Catalog** :
-   ```powershell
-   Get-ADDomainController -Filter * | Select-Object Name, IsGlobalCatalog
-   ```
-
-2. Configurez les serveurs DNS pour qu'ils se référencent mutuellement en cas de panne.
 
 ---
 
