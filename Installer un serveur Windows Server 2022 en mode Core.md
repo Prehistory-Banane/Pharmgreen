@@ -53,7 +53,7 @@
    Add-Computer -DomainName "domaine.local" -Credential (Get-Credential) -Restart
    ```
    - Remplacez `domaine.local` par le nom de votre domaine.
-   - Entrez les identifiants d’un compte administrateur du domaine.
+   - Entrez les identifiants d’un compte administrateur du domaine (exemple : `domaine\Administrator`)
 
 2. Vérifiez que le serveur a rejoint le domaine :
    ```powershell
