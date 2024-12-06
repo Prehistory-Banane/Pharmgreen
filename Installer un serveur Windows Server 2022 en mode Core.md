@@ -1,4 +1,4 @@
-# `3) Windows 2022 + rôles`
+# `3) Windows Core + rôles`
    ### `3.1) Installation du serveur` 
 ### Le détail de l'instalation d'un serveur Windows Server en mode CORE n'est pas détaillé dans ce document INSTALL.md, mais ici ⬇️
 * #### [Instalation d'un serveur Windows Server en mode CORE](https://www.it-connect.fr/chapitres/installer-windows-server-en-mode-core/) 
