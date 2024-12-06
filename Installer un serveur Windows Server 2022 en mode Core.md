@@ -21,7 +21,7 @@
    ```powershell
    Rename-Computer -NewName "NomDuServeur" -Restart
    ```
-   Remplacez `NomDuServeur` par le nom que vous souhaitez attribuer au serveur (ex : `SRVCORE-DC`).
+   Remplacez `NomDuServeur` par le nom que vous souhaitez attribuer au serveur (ex : `SRVWIN-CORE`).
 
 4. Le serveur redémarrera automatiquement.
 
@@ -34,11 +34,11 @@
    ```
 2. Configurez une adresse IP statique, une passerelle et des serveurs DNS :
    ```powershell
-   New-NetIPAddress -InterfaceAlias "Ethernet" -IPAddress 192.168.1.10 -PrefixLength 24 -DefaultGateway 192.168.1.1
-   Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses 192.168.1.5
+   New-NetIPAddress -InterfaceAlias "Ethernet" -IPAddress 192.168.40.10 -PrefixLength 24 -DefaultGateway 192.168.40.254
+   Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses 192.168.40.5
    ```
-   - Remplacez `192.168.1.10` par l'adresse IP que vous souhaitez pour le serveur.
-   - Remplacez `192.168.1.5` par l'adresse IP d'un serveur DNS (généralement celle du contrôleur de domaine principal).
+   - Remplacez `192.168.40.10` par l'adresse IP que vous souhaitez pour le serveur.
+   - Remplacez `192.168.40.5` par l'adresse IP d'un serveur DNS (généralement celle du contrôleur de domaine principal).
 
 3. Testez la connectivité réseau et DNS :
    ```powershell
