@@ -3,51 +3,40 @@
 ### Le détail de l'instalation d'un serveur Windows Server en mode CORE n'est pas détaillé dans ce document INSTALL.md, mais ici ⬇️
 * #### [Instalation d'un serveur Windows Server en mode CORE](https://www.it-connect.fr/chapitres/installer-windows-server-en-mode-core/) 
 
-   ### `3.2) Installation du rôle AD-DS`
+   ### `3.2) Installation et Configuration des Services AD-DS sur Windows Server 2022 Core`
 
+#### Étape 1 : Préparer le serveur Windows Server Core
 
-  
-# Installation et Configuration des Services Active Directory Domain Services (AD-DS) sur Windows Server 2022 Core
-
-## Étape 1 : Préparer le serveur Windows Server Core
-
-### 1.1 Configurer un nom d’hôte
+##### 1.1 Configurer un nom d’hôte
 1. Connectez-vous à votre serveur.
-2. Vérifiez le nom actuel du serveur :
-   ```powershell
-   hostname
-   ```
-3. Changez le nom du serveur :
-   ```powershell
-   Rename-Computer -NewName "NomDuServeur" -Restart
-   ```
-   Remplacez `NomDuServeur` par le nom que vous souhaitez attribuer au serveur (ex : `SRVWIN-CORE`).
 
-4. Le serveur redémarrera automatiquement.
+2. Taper 2 sur la page de gestion :  
+![1](https://github.com/user-attachments/assets/5884ced1-46d1-4dab-afb0-0335372696cb)
+
+3. Changez le nom du serveur :  
+![2](https://github.com/user-attachments/assets/fef20715-8b1a-425a-b210-d242ff50cd92)
+
+
+5. Le serveur redémarrera automatiquement.
 
 ---
 
-### 1.2 Configurer une adresse IP statique
-1. Listez les interfaces réseau disponibles :
-   ```powershell
-   Get-NetIPAddress
-   ```
-2. Configurez une adresse IP statique, une passerelle et des serveurs DNS :
-   ```powershell
-   New-NetIPAddress -InterfaceAlias "Ethernet" -IPAddress 192.168.40.10 -PrefixLength 24 -DefaultGateway 192.168.40.254
-   Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses 192.168.40.5
-   ```
-   - Remplacez `192.168.40.10` par l'adresse IP que vous souhaitez pour le serveur.
-   - Remplacez `192.168.40.5` par l'adresse IP d'un serveur DNS (généralement celle du contrôleur de domaine principal).
+##### 1.2 Configurer une adresse IP statique
+1. Taper 8 sur la page de gestion :
+ 
+![3](https://github.com/user-attachments/assets/22e46eab-3fe5-4ebd-b75f-924090f200d9)
+   
+2. Choisissez le network que vous souhaitez configurer :
 
-3. Testez la connectivité réseau et DNS :
-   ```powershell
-   Test-Connection domaine.local
-   ```
+![4](https://github.com/user-attachments/assets/65fccbcf-f5ab-41da-b4ed-699ddabbb67d)
+
+3. Entrez les différentes données pour chaque ligne :
+   
+![5](https://github.com/user-attachments/assets/51f530d2-1bfd-4623-bf6b-2ed29a1b7ed9)
 
 ---
 
-## Étape 2 : Joindre le serveur au domaine
+#### Étape 2 : Joindre le serveur au domaine
 1. Joignez le serveur au domaine existant (exemple : `domaine.local`) :
    ```powershell
    Add-Computer -DomainName "domaine.local" -Credential (Get-Credential) -Restart
@@ -62,9 +51,9 @@
 
 ---
 
-## Étape 3 : Installer le rôle AD-DS
+#### Étape 3 : Installer le rôle AD-DS
 
-### 3.1 Installer le rôle AD-DS
+##### 3.1 Installer le rôle AD-DS
 1. Installez le rôle **Active Directory Domain Services** :
    ```powershell
    Install-WindowsFeature AD-Domain-Services
@@ -77,9 +66,9 @@
 
 ---
 
-## Étape 4 : Promouvoir le serveur en contrôleur de domaine
+#### Étape 4 : Promouvoir le serveur en contrôleur de domaine
 
-### 4.1 Lancer la promotion
+##### 4.1 Lancer la promotion
 1. Exécutez la commande suivante pour promouvoir le serveur en tant que contrôleur de domaine :
    ```powershell
    Install-ADDSDomainController -DomainName "domaine.local" -Credential (Get-Credential) -InstallDns:$true -SafeModeAdministratorPassword (ConvertTo-SecureString "MotDePasseDS" -AsPlainText -Force)
@@ -91,7 +80,7 @@
 
 ---
 
-### 4.2 Vérifiez la promotion
+##### 4.2 Vérifiez la promotion
 1. Confirmez que le serveur est devenu un contrôleur de domaine :
    ```powershell
    Get-ADDomainController -Filter *
@@ -108,7 +97,7 @@
 
 ---
 
-## Résultat attendu
+#### Résultat attendu
 À la fin de ce tutoriel, votre serveur Windows Server Core sera configuré comme un contrôleur de domaine fonctionnel et intégré au domaine existant.
 
 - Le serveur pourra gérer les authentifications et participer à la réplication AD.
